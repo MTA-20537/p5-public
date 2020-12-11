@@ -5,7 +5,7 @@
  */
 public class Signifier : MonoBehaviour
 {
-    public bool isDiegetic = true;  // wether or not the desired signifers should be diegetic or non-diegetic
+    public bool isDiegetic = true;  // whether the desired signifers should be diegetic or non-diegetic
 
     /**
      * update is called once per frame

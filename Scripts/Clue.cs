@@ -19,9 +19,8 @@ public class Clue : MonoBehaviour
      */
     void Start()
     {
-        origin = transform.position;
-        // Start is called before the first frame update
-        interactable = gameObject.GetComponent<Interactable>();
+        origin = transform.position;                            // define origin point based on initial Clue position
+        interactable = gameObject.GetComponent<Interactable>(); // reference interactable component
     }
 
     /** 

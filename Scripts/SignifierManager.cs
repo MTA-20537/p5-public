@@ -1,32 +1,41 @@
 ﻿using UnityEngine;
 
+/**
+ * The class responsible managing the visibility of key elements in the game according to operator input
+ */
 public class SignifierManager : MonoBehaviour
 {
-    public bool isNonDiegetic;          // whether or not this signifier is diegetic or non-diegetic
-    public bool showClues;
-    public bool showCodex;
-    public AudioManager audioManager;
-    private GameObject[] signifiers;
-    private Clue[] clueObjects;
-    private GameObject[] signObjects;   //
-    private GameObject codexObject;
-    private GameObject codexDummyObject;
+    public bool isNonDiegetic;              // whether or not this signifier is diegetic or non-diegetic
+    public bool showClues;                  // whether or not clues should be rendered for the player
+    public bool showCodex;                  // whether ot not the play should be shown the interactable version of the Codex or the dummy version
+    public AudioManager audioManager;       // the audio manager, responsible for managing and playing audio
+    private GameObject[] signifiers;        // all the Signifiers in the scene
+    private Clue[] clueObjects;             // all the Clues in the scene
+    private GameObject[] signObjects;       // all the signs next to the Clues in the scene
+    private GameObject codexObject;         // the Codex object in the scene
+    private GameObject codexDummyObject;    // the dummy version of the Codex in the scene
 
-    // Start is called before the first frame update
+    /**
+     * start is called before the first frame update
+     */
     void Start()
     {
+        // initialize objects
         signifiers = GameObject.FindGameObjectsWithTag("Signifier");
         clueObjects = (Clue[]) FindObjectsOfType(typeof(Clue));
         signObjects = GameObject.FindGameObjectsWithTag("Sign");
         codexObject = GameObject.FindGameObjectWithTag("Codex");
         codexDummyObject = GameObject.FindGameObjectWithTag("CodexDummy");
 
+        // perform the initial update of all managed objects
         updateSignifiers();
         updateClues();
         updateCodex();
     }
 
-    // Update is called once per frame
+    /**
+     * update is called once per frame
+     */
     void Update()
     {
         // switch between diegetic- and non-diegetic signifiers with "J" on the keyboard
@@ -77,9 +86,12 @@ public class SignifierManager : MonoBehaviour
         }
     }
 
+    /**
+     * update all individual signifiers in the scene
+     */
     private void updateSignifiers()
     {
-        // update individual signifiers
+        // loop through each signifier in the scene
         foreach (GameObject sig in this.signifiers)
         {
             Signifier signifier = sig.GetComponent<Signifier>();
@@ -92,6 +104,9 @@ public class SignifierManager : MonoBehaviour
         }
     }
 
+    /**
+     * update all individual Clues in the scene
+     */
     private void updateClues()
     {
         updateSignifiers();
@@ -101,6 +116,7 @@ public class SignifierManager : MonoBehaviour
         {
             CustomUtility.applyMeshRendererOperationRecursively(clue.gameObject, gameObject =>
                 {
+                    // update every MeshRenderer in every Clue object according to whether or not Clues should be displayed to the player
                     MeshRenderer objectMesh = gameObject.GetComponent<MeshRenderer>();
                     objectMesh.enabled = this.showClues;
                 }
@@ -115,6 +131,9 @@ public class SignifierManager : MonoBehaviour
         }
     }
 
+    /**
+     * switch between the two versions of the Codex according to showCodex
+     */
     private void updateCodex()
     {
         // switch Codex with dummy depending on showCodex

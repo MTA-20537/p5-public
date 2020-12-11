@@ -1,17 +1,17 @@
 ﻿using UnityEngine;
 
+/**
+ * The class representing a diegetic signifier in the game
+ */
 public class Signifier : MonoBehaviour
 {
-    public bool isDiegetic = true;
+    public bool isDiegetic = true;  // wether or not the desired signifers should be diegetic or non-diegetic
 
-    void Start()
-    {
-        // Start is called before the first frame update...
-    }
-
+    /**
+     * update is called once per frame
+     */
     void Update()
     {
-        // Update is called once per frame...
         // show or hide diegetic signifiers depending on isDiegetic
         foreach(Transform child in transform)
         {

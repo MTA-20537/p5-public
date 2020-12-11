@@ -13,23 +13,27 @@ public class GUIClue : MonoBehaviour
     public bool isInteractable;                 // whether or not the player should be able to interact with the GUIClue
     public AudioClip cluePlacedSound;           // the sound effect that plays when the GUIClue has been placed in a category
     public AudioClip buttonClickedSound;        // the sound effect that plays when the GUIClue is being "moused over" or moved between categories
-    public AudioManager audioManager;           // Audio manager component for playing various voice over audio files
+    public AudioManager audioManager;           // Audio Manager component for playing various voice over audio files
     private Hand collidingHand;                 // whether or not the GUIClue is colliding with the player hand
     private GameObject handCollider;            // the GameObject colliding with the GUIClue, if any
 
-    // Start is called before the first frame update
+    /**
+     * start is called before the first frame update
+     */
     void Start()
     {
-        category = 0;               // GUIClue starts out in the "UNASSIGNED" category
-        isHolding = false;          // GUIClue starts out not being held by the player
-        collidingHand = null;        // GUIClue starts out not colliding with the players hand(s)
-        isInteractable = false;     // GUIClue starts out not being interactable by the player
-        handCollider = null;        // since the GUIClue is not being held by the player at the start of the game, the hand collider is null
+        category = 0;           // GUIClue starts out in the "UNASSIGNED" category
+        isHolding = false;      // GUIClue starts out not being held by the player
+        collidingHand = null;   // GUIClue starts out not colliding with the players hand(s)
+        isInteractable = false; // GUIClue starts out not being interactable by the player
+        handCollider = null;    // since the GUIClue is not being held by the player at the start of the game, the hand collider is null
         this.gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = clue.identifier;       // set button text to associated Clue's identifier string
         this.gameObject.transform.position = new Vector3(transform.position.x, -100, transform.position.z); // GUIClue starts out being moved out of sight of the player until it's associated Clue is discovered
     }
 
-    // Update is called once per frame
+    /**
+     * update is called once per frame
+     */
     void Update()
     {
         if (!clue.hasBeenFound) return; // don't update the GUIClue if the Clue has not been found yet (here we rely on the Codex to hide the GUIClue from the player)
@@ -44,13 +48,15 @@ public class GUIClue : MonoBehaviour
             // "attach" button to Hand by using the Hand's x- and y-coordinates
             float newX = this.handCollider.transform.position.x - 0.03f;
             float newY = this.handCollider.transform.position.y - 0.02f;
-            //                                               ^^^^^ manual offset
+            //                                                    ^^^^^ manual offset
+
             // keep the button within the x-axis bounds of the Codex dashboard
             if (newX < -0.4) newX = -0.4f;
             else if (newX > 0.4) newX = 0.4f;
             // keep the button within the y-axis bounds of the Codex dashboard
             if (newY < 1.3) newY = 1.3f;
             else if (newY > 1.8) newY = 1.8f;
+
             // perform the final transformation
             transform.position = new Vector3(newX, newY, transform.position.z); // TODO: fine tune offset when grabbing
         }
@@ -88,9 +94,12 @@ public class GUIClue : MonoBehaviour
         this.gameObject.GetComponent<Button>().colors = colors;     // save color to button
     }
 
+    /**
+     * whether the current GameObject colliding with the GUIClue is a player hand
+     */
     private bool isHand(Collider collider)
     {
-        // whether the current GameObject colliding with the GUIClue is a player hand
+        // get the colliding gameobject as a Hand object and check it's tag
         Hand hand = collider.gameObject.GetComponent<Hand>();
         if (collider.gameObject.tag == "Hand" && hand != null)
         {
@@ -99,6 +108,9 @@ public class GUIClue : MonoBehaviour
         return false;
     }
 
+    /**
+     * update the category of the GUIClue according to it's current position
+     */
     private void updateCategory()
     {
         // parse GUIClue position and determine which gui category it falls under
@@ -128,13 +140,14 @@ public class GUIClue : MonoBehaviour
             this.gameObject.GetComponent<AudioSource>().PlayOneShot(this.buttonClickedSound, 0.2f);
             this.handCollider.GetComponent<Hand>().TriggerHapticPulse(UInt16.MaxValue);
         }
-
-        
     }
 
+    /**
+     * invoked by Unity when an object collides with this GUIClue
+     */
     void OnTriggerEnter(Collider collider)
     {
-        // this is called whenever a collider intersects with the GUIClue
+        // if this GUIClue is interactable and the collider is a hand
         if (this.isInteractable && isHand(collider))
         {
             // if the GUIClue is currently interactable and the collider is a hand
@@ -151,9 +164,12 @@ public class GUIClue : MonoBehaviour
         }
     }
 
+    /**
+     * invoked by Unity when an object stops colliding with this GUIClue
+     */
     void OnTriggerExit(Collider collider)
     {
-        // this is called whenever a collider stops intersecting with the GUIClue
+        // if the collider was a hand remove it's reference
         if (isHand(collider))
         {
             this.collidingHand = null;

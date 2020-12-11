@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+/**
+ * The class representing the Codex, handling Clues and game win state
+ */
 public class Codex : MonoBehaviour
 {
     public GUIClue[] clues;                     // the amount of clues in the scene
@@ -8,23 +11,29 @@ public class Codex : MonoBehaviour
     public bool gameHasBeenWon;                 // whether or not the game has been won
     public AudioClip newClueUnlockedSound;      // the sound effect that plays when the player unlocks a new clue
     public AudioClip gameWonSound;              // the sound effect that plays when the player wins the game
-    public IntroOutro introOutro;
+    public IntroOutro introOutro;               // the intro- and outro sequence manager
 
-    // Start is called before the first frame update
+    /**
+     * start is called before the first frame update
+     */
     void Start()
     {
         this.cluesFound = 0;            // start the game with zero clues found
         this.gameHasBeenWon = false;    // start the game in the "not-won"-state
     }
 
+    /**
+     * draw a semitransparent blue cube at the transforms position
+     */
     void OnDrawGizmosSelected()
     {
-        // Draw a semitransparent blue cube at the transforms position
         Gizmos.color = new Color(1, 0, 0, 0.5f);
         Gizmos.DrawCube(transform.position, new Vector3(1f, 0.6f, 0));
     }
 
-    // Update is called once per frame
+    /** 
+     * update is called once per frame
+     */
     void Update()
     {
         // update CluesFoundText
@@ -113,7 +122,7 @@ public class Codex : MonoBehaviour
         {
             this.gameHasBeenWon = true;                                                 // if all the GUIClues were placed in the correct categories, the game has been won
             this.gameObject.GetComponent<AudioSource>().PlayOneShot(this.gameWonSound); // play victory sound for extra celebratory effect
-            introOutro.playOutro();
+            introOutro.playOutro();                                                     // play the outro sequence when the game has been won
         }
 
         // if the player is already holding a GUIClue, they may not be allowed to pick up another one
@@ -133,7 +142,6 @@ public class Codex : MonoBehaviour
         }
 
         // update the amount of clues found and play sound effect if a new clue has been discovered since last update
-        //if (updatedCluesFound > this.cluesFound) this.gameObject.GetComponent<AudioSource>().PlayOneShot(this.newClueUnlockedSound);
         this.cluesFound = updatedCluesFound;
     }
 }

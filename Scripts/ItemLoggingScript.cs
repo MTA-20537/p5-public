@@ -19,8 +19,8 @@ public class ItemLoggingScript : MonoBehaviour
     private float noticeTime = 0f;          // the timestamp at which the object was first noticed
     private float noticedObjectTime = 0f;   // the timestamp at which the object is considered noticable
     private float noticeTimeThreshold = 1f; // the amount of time the player must be looking at an object for it to be considered noticed
-    private bool noticed = false;           // whether or not the associated Clue has been noticed
-    private bool isVisible = false;         // whether or not the associated Clue is invisible
+    private bool noticed = false;           // whether the associated Clue has been noticed
+    private bool isVisible = false;         // whether the associated Clue is invisible
 
     /**
      * start is called before the first frame update
@@ -135,11 +135,11 @@ public class ItemLoggingScript : MonoBehaviour
      */
     private void OnApplicationQuit()
     {
-        // Tell the logging manager to save the data (to disk and SQL by default).
+        // tell the logging manager to save the data (to disk and SQL by default).
         loggingManager.SaveLog("ItemData");
 
-        // After saving the data, you can tell the logging manager to clear its logs.
-        // Now its ready to save more data. Saving data will append to the existing log.
+        // after saving the data, you can tell the logging manager to clear its logs.
+        // now its ready to save more data. Saving data will append to the existing log.
         loggingManager.ClearLog("ItemData");
     }
 
@@ -151,7 +151,7 @@ public class ItemLoggingScript : MonoBehaviour
         Vector3 relativeNormalizedPos = (transform.position - Camera.position).normalized;
         float dot = Vector3.Dot(relativeNormalizedPos, Camera.forward);
 
-        //angle difference between looking direction and direction to item (radians), turned into degrees
+        // angle difference between looking direction and direction to item (radians), turned into degrees
         return Mathf.Acos(dot) * Mathf.Rad2Deg;
     }
 }

@@ -1,2 +1,4 @@
 # p5-public
-All the custom code and models used in our P5 prototype
+This repository contains all the custom code and assets used in our P5 prototype, including custom prefabs and sound effects.
+
+Unfortunately, we were unable to make the entire source code and [Unity](https://unity.com/) project publicly available, since the prototype uses various assets from outside sources, including payed assets from the [Unity Asset Store](https://assetstore.unity.com/). For this project we also used a custom version of the [Logging Manager](https://github.com/med-material/LoggingManager) provided by Aalborg Univerty, but since that code is published without a license, we also cannot redistribute that. All this means the source files contained within this repository cannot be expected to compile or work by itself, or as intended for the prototype, and is merely made available here for reference.
